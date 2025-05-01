@@ -10,7 +10,7 @@ df = pd.read_csv(csv_filename)
 df_spmv = df[df['mode'] == 'spmv'].copy()
 df_spgemm = df[df['mode'] == 'spgemm'].copy()
 
-# --- Plot 1: L2 Norm Difference vs. Matrix Size for SpMV ---
+
 if 'matrix_size' in df_spmv.columns:
     plt.figure(figsize=(8,6))
     plt.plot(df_spmv['matrix_size'], df_spmv['l2_norm_diff'], marker='o', color='purple')
@@ -23,7 +23,7 @@ if 'matrix_size' in df_spmv.columns:
 else:
     print("No 'matrix_size' field found for SpMV in CSV.")
 
-# --- Plot 2: CPU Memory Usage vs. Matrix Size for SpMV ---
+
 if 'matrix_size' in df_spmv.columns:
     plt.figure(figsize=(8,6))
     plt.plot(df_spmv['matrix_size'], df_spmv['cpu_mem_mb'], marker='o', color='blue')
@@ -36,7 +36,7 @@ if 'matrix_size' in df_spmv.columns:
 else:
     print("No 'matrix_size' field found for SpMV in CSV.")
 
-# --- Plot 3: GPU Memory Usage vs. Matrix Size for SpMV ---
+
 if 'matrix_size' in df_spmv.columns and df_spmv['gpu_mem_mb'].max() > 0:
     plt.figure(figsize=(8,6))
     plt.plot(df_spmv['matrix_size'], df_spmv['gpu_mem_mb'], marker='o', color='red')
@@ -49,8 +49,7 @@ if 'matrix_size' in df_spmv.columns and df_spmv['gpu_mem_mb'].max() > 0:
 else:
     print("GPU memory usage is 0 or 'matrix_size' is not logged for SpMV.")
 
-# --- Plot 4: L2 Norm Difference vs. Matrix A Size for SpGEMM ---
-# For SpGEMM, we assume "matrix_A_size" indicates the size (number of rows) of matrix A.
+
 if 'matrix_A_size' in df_spgemm.columns:
     plt.figure(figsize=(8,6))
     plt.plot(df_spgemm['matrix_A_size'], df_spgemm['l2_norm_diff'], marker='o', color='purple')
@@ -63,7 +62,7 @@ if 'matrix_A_size' in df_spgemm.columns:
 else:
     print("No 'matrix_A_size' field found for SpGEMM in CSV.")
 
-# --- Plot 5: CPU Memory Usage vs. Matrix A Size for SpGEMM ---
+
 if 'matrix_A_size' in df_spgemm.columns:
     plt.figure(figsize=(8,6))
     plt.plot(df_spgemm['matrix_A_size'], df_spgemm['cpu_mem_mb'], marker='o', color='blue')
@@ -76,7 +75,7 @@ if 'matrix_A_size' in df_spgemm.columns:
 else:
     print("No 'matrix_A_size' field found for SpGEMM in CSV.")
 
-# --- Plot 6: GPU Memory Usage vs. Matrix A Size for SpGEMM ---
+
 if 'matrix_A_size' in df_spgemm.columns and df_spgemm['gpu_mem_mb'].max() > 0:
     plt.figure(figsize=(8,6))
     plt.plot(df_spgemm['matrix_A_size'], df_spgemm['gpu_mem_mb'], marker='o', color='red')
@@ -89,8 +88,7 @@ if 'matrix_A_size' in df_spgemm.columns and df_spgemm['gpu_mem_mb'].max() > 0:
 else:
     print("GPU memory usage is 0 or 'matrix_A_size' is not logged for SpGEMM.")
 
-# --- Additional Plot 7: Speedup vs. Matrix Size for SpMV ---
-# This plot uses the 'speedup' field which is computed as CPU time / GPU time.
+
 if 'matrix_size' in df_spmv.columns and 'speedup' in df_spmv.columns:
     plt.figure(figsize=(8,6))
     plt.plot(df_spmv['matrix_size'], df_spmv['speedup'], marker='o', color='green')
@@ -103,7 +101,7 @@ if 'matrix_size' in df_spmv.columns and 'speedup' in df_spmv.columns:
 else:
     print("Speedup or 'matrix_size' data not found for SpMV.")
 
-# --- Additional Plot 8: CPU and GPU Time Comparison for SpGEMM ---
+
 if 'matrix_A_size' in df_spgemm.columns and 'cpu_time_sec' in df_spgemm.columns and 'gpu_time_sec' in df_spgemm.columns:
     plt.figure(figsize=(8,6))
     plt.plot(df_spgemm['matrix_A_size'], df_spgemm['cpu_time_sec'], marker='o', color='blue', label='CPU Time')
