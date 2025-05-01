@@ -1,0 +1,36 @@
+#!/bin/bash
+#SBATCH -J CSC548_final 
+#SBATCH -o output/job.%j.out        
+#SBATCH -e output/err.%j.out
+#SBATCH -N 2                  
+#SBATCH -n 2                  
+#SBATCH -t 01:30:00           
+#SBATCH -p cascade         
+
+# For SpMV, test different matrix sizes
+spmv_sizes=(1000 2000 5000 10000)
+density=0.01
+impl="mpi"
+
+export OMPI_MCA_pml="^ucx"
+export OMPI_MCA_btl_openib_if_include="mlx5_0:1"
+module load py3-mpi4py/3.1.3
+
+echo "Running SpMV tests in batch..."
+for size in "${spmv_sizes[@]}"; do
+    echo "SpMV test: size=${size}"
+    mpirun -n 2 python3 spmv-mpi.py --mode spmv --size "$size" --density "$density" --impl "$impl"
+done
+
+impl="parallel"
+
+## For SpGEMM, test different matrix sizes (square matrices)
+#spgemm_sizes=(1000 2000 5000)
+#echo "Running SpGEMM tests in batch..."
+#for size in "${spgemm_sizes[@]}"; do
+#    echo "SpGEMM test: sizeA=${size}, sizeB=${size}"
+#    python parallel_spmv.py --mode spgemm --sizeA "$size" --sizeB "$size" --density "$density" --impl "$impl"
+#done
+#
+echo "All tests completed."
+
